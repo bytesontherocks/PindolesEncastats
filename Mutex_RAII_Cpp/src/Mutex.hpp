@@ -42,8 +42,8 @@ public:
             osMutexDelete(mutex_id);
     }  
     // the user is responsible to unlock it
-    auto lock() { osMutexAcquire(mutex_id, osWaitForever); }    
-    auto unlock() { osMutexRelease(mutex_id); }
+    void lock() { osMutexAcquire(mutex_id, osWaitForever); }    
+    void unlock() { osMutexRelease(mutex_id); }
 
 private:
     osMutexId_t mutex_id;  
@@ -59,8 +59,8 @@ class Mutex
 {
 public:
     // the user is responsible to unlock it
-    auto lock() { mutex_id.lock(); }    
-    auto unlock() { mutex_id.unlock(); }
+    void lock() { mutex_id.lock(); }    
+    void unlock() { mutex_id.unlock(); }
 
 private:
     std::mutex mutex_id;  
