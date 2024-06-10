@@ -25,6 +25,7 @@
 #include <format>
 
 namespace templates {
+
     template<class T>
     void printTemplate(const T t) {
         std::cout << "Generic template: " << t << std::endl;
@@ -35,10 +36,38 @@ namespace templates {
         std::cout << std::format("Specialized template for double types: {:f}", t) << std::endl;
     }
 
+    enum class Mw : std::uint32_t
+    {
+        a = 0,
+        b = 1,
+        c = 2
+    };
+
+    template<Mw t>
+    auto returnDifferentType(const std::string& s);   
+    
+    template<>
+    auto returnDifferentType<Mw::a>(const std::string& s) {
+        return std::string{"I'm a!"};
+    }
+
+    template<>
+    auto returnDifferentType<Mw::b>(const std::string& s) {
+        return std::string{"I'm b!"};
+    }
+
+    template<>
+    auto returnDifferentType<Mw::c>(const std::string& s) {
+        return std::string{"I'm c!"};
+    }
 }
 
 int main ()
 {
     templates::printTemplate(double{355.0/113.0});
     templates::printTemplate(std::uint32_t{98});
+
+    const auto s = templates::returnDifferentType<templates::Mw::b>("not used");
+     templates::printTemplate(s);
 }
+
