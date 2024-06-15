@@ -38,29 +38,27 @@ namespace {
     using Messages = std::variant<Message1, Message2, Message3, Message4>;
 
     struct ProcessMessage {
-        void operator()(Message1 msg1) const {
+        void operator()(const Message1 msg1) const {
             std::cout << "Processing Message 1!" << std::endl;
         }
-        void operator()(Message2 msg2) const {
+        void operator()(const Message2 msg2) const {
             std::cout << "Processing Message 2!" << std::endl;
         }
-        void operator()(Message3 msg3) const {
+        void operator()(const Message3 msg3) const {
             std::cout << "Processing Message 3!" << std::endl;
         }
-        void operator()(Message4 msg4) const {
+        void operator()(const Message4 msg4) const {
             std::cout << "Processing Message 4!" << std::endl;
         }
     };
-
-
 }
 
 int main ()
 {
     std::vector<Messages> vv{Message2{}, Message1{}, Message4{}, Message3{}, Message2{}};
 
-    for (const auto & variant : vv)
-        std::visit(ProcessMessage{}, variant);
+    for (const auto& msg : vv)
+        std::visit(ProcessMessage{}, msg);
    
 }
 
