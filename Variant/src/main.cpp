@@ -34,9 +34,11 @@ namespace {
     struct Message2{};
     struct Message3{};
     struct Message4{};
+    struct Message5{};
     
-    using Messages = std::variant<Message1, Message2, Message3, Message4>;
+    using Message = std::variant<Message1, Message2, Message3, Message4>;
 
+    // std::visit approach
     struct ProcessMessage {
         void operator()(const Message1 msg1) const {
             std::cout << "Processing Message 1!" << std::endl;
@@ -51,14 +53,50 @@ namespace {
             std::cout << "Processing Message 4!" << std::endl;
         }
     };
+
+    using Messages = std::vector<Message>;
+
+    // std::get_if<> approach
+    void processMessage(Messages const& msgs)
+    {
+        for (auto const& msg : msgs) {
+
+            if (const Message1* msg1 = std::get_if<Message1>(&msg))
+                std::cout << "Processing Message 1!" << std::endl;
+            if (const Message2* msg2 = std::get_if<Message2>(&msg))
+                std::cout << "Processing Message 2!" << std::endl;
+            if (const Message3* msg3 = std::get_if<Message3>(&msg))
+                std::cout << "Processing Message 3!" << std::endl;
+            if (const Message4* msg4 = std::get_if<Message4>(&msg))
+                std::cout << "Processing Message 4!" << std::endl;
+
+            // Compilation error if the object type is not in the variant
+            //
+            // if (const Message5* msg5 = std::get_if<Message5>(&msg))
+            //     std::cout << "Processing Message 5!" << std::endl;
+        }
+    }
 }
 
 int main ()
 {
-    std::vector<Messages> vv{Message2{}, Message1{}, Message4{}, Message3{}, Message2{}};
+    const std::vector<Message> vv{Message2{}, Message1{}, Message4{}, Message3{}, Message2{}};
 
-    for (const auto& msg : vv)
-        std::visit(ProcessMessage{}, msg);
+    {
+        // solution using std::visit
+        //     
+        std::cout << "Solution using std::variant: " << std::endl;
+        for (const auto& msg : vv)
+            std::visit(ProcessMessage{}, msg);
+    }
+
+    {
+        // solution using std::get_if (higher performance)
+        //
+        std::cout << "Solution using std::get_if<>: " << std::endl;
+        processMessage(vv);
+
+    }
    
 }
 
