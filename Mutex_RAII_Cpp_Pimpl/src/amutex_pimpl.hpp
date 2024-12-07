@@ -1,22 +1,9 @@
 #pragma once 
 
-#include <mutex>
-
-
-class AMutexImpl
-{
-public:
-    void lock() { mutex_id.lock(); }    
-    void unlock() { mutex_id.unlock(); }
-
-private:
-    std::mutex mutex_id;  
-};
-
+class AMutexImpl;
 using DefaultAMutexImpl = AMutexImpl;
 
 
-//#define CMSIS_V2
 #define MUTEX_CPP11
 
 #ifdef CMSIS_V2

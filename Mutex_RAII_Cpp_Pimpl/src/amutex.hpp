@@ -23,14 +23,13 @@
 #pragma once
 #include <memory>
 #include <mutex>
-
 #include "amutex_pimpl.hpp"
 
 class AMutex
 {
 public:
-    AMutex() : m_pimpl_amutex(std::make_unique<AMutexImpl>()) {};
-    ~AMutex() = default;
+    AMutex();
+    ~AMutex();
 
    // the user is responsible to unlock it
     void lock();    
