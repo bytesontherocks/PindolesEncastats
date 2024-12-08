@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 
-#include "amutex.hpp"
+#include "amutex/iface/amutex.hpp"
 #include <iostream>
 #include <thread>
 #include <chrono>

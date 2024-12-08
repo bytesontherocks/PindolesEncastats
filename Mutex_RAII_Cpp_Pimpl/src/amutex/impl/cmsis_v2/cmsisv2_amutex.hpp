@@ -1,24 +1,14 @@
-#pragma once 
-
-class AMutexImpl;
-using DefaultAMutexImpl = AMutexImpl;
-
-
-#define MUTEX_CPP11
-
-#ifdef CMSIS_V2
+#pragma once
 
 #include "cmsis_os2.h"
 
-//allow declaring a "self-destroying" object acording to the scope to avoid risk to keep mutex acquired
-
-class Mutex
+class CmsisV2AMutexImpl
 {
 public:
-    Mutex() {
+    CmsisV2AMutexImpl() {
         mutex_id = osMutexNew(NULL);
     }
-    ~Mutex() {
+    ~CmsisV2AMutexImpl() {
         if (mutex_id != NULL)
             osMutexDelete(mutex_id);
     }  
@@ -29,5 +19,3 @@ public:
 private:
     osMutexId_t mutex_id;  
 };
-
-#endif

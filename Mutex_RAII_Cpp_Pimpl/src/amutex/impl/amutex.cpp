@@ -1,6 +1,6 @@
-#include "amutex.hpp"
+#include "iface/amutex.hpp"
 
-#include "impl/posix/posix_amutex.hpp"
+#include "posix/posix_amutex.hpp"
 
 AMutex::AMutex() : m_pimpl_amutex(std::make_unique<DefaultAMutexImpl>()) {};
 AMutex::~AMutex() {}
