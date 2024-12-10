@@ -31,7 +31,8 @@ int main ()
 {
     std::cout << "This is a sandbox project to play with ideas" << std::endl;
 
-    auto mtx = AMutex();
+    AMutexFactory amutexfact{};
+    auto mtx = AMutex(&amutexfact);
 
     auto t1 = std::thread ([&]() {
         for(;;)

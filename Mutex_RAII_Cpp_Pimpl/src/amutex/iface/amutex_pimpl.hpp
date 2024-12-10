@@ -1,7 +1,8 @@
 #pragma once 
 
 #ifndef CMSIS_V2
-class PosixAMutexImpl;
+//class PosixAMutexImpl;
+#include "impl/posix/posix_amutex.hpp"
 using DefaultAMutexImpl = PosixAMutexImpl;
 #else
 // class CmsisV2AMutexImpl;

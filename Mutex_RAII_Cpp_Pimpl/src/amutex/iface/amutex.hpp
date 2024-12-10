@@ -21,22 +21,23 @@
 //SOFTWARE.
 
 #pragma once
-#include <memory>
+
 #include <mutex>
 #include "amutex_pimpl.hpp"
 
-class AMutex
+
+
+
+class AMutex : private AMutexBase
 {
 public:
-    AMutex();
+    AMutex(IAMutexFactory* amutex_factory) : AMutexBase(amutex_factory) {};
     ~AMutex();
 
    // the user is responsible to unlock it
     void lock();    
     void unlock();
 
-private:    
-    std::unique_ptr<DefaultAMutexImpl> m_pimpl_amutex;
 };
 
 class AMutexGuard

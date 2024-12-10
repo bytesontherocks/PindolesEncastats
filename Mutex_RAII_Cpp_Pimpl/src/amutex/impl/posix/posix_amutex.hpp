@@ -3,8 +3,10 @@
 #include <mutex>
 #include <chrono>
 #include <thread>
-
-class PosixAMutexImpl
+#include "../IAMutexFactory.hpp"
+#include <memory>
+#include "../IAMutex.hpp"
+class PosixAMutexImpl : public IAMutex
 {
 public:
     void lock() { 
@@ -15,4 +17,12 @@ public:
 
 private:
     std::mutex mutex_id;  
+};
+
+class PosixAMutexImplFactory : public IAMutexFactory
+{
+public:
+    virtual std::unique_ptr<IAMutex> create() {
+        return std::make_unique<PosixAMutexImplFactory>();
+    }
 };
