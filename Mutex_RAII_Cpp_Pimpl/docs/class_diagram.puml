@@ -1,0 +1,47 @@
+@startuml
+
+interface IFactory
+class AMutexCreator
+class AMockMutexCreator
+IFactory <|-- AMutexCreator
+IFactory <|-- AMockMutexCreator
+
+interface IAMutex
+class AMutex
+class AMockMutex
+IAMutex <|-- AMutex
+IAMutex <|-- AMockMutex
+
+IFactory ..> IAMutex
+
+class ImplPosix
+class ImplFreertos
+
+class AMutexBase
+AMutexBase <|-- ImplPosix
+AMutexBase <|-- ImplFreertos
+
+AMutexBase <|-- AMutex
+@enduml
+
+@startuml
+interface IAMutex
+class AMutex
+
+class ImplPosix
+class ImplFreertos
+class ImplMock
+
+class AMutexBase
+IAMutex <|-- ImplPosix
+IAMutex <|-- ImplFreertos
+IAMutex <|-- ImplMock
+
+AMutexBase <|-- AMutex
+
+AMutexBase ..> IFactory : invokes
+IFactory  ..> ImplPosix : creates
+IFactory  ..> ImplFreertos : creates
+IFactory  ..> ImplMock : creates
+
+@enduml
