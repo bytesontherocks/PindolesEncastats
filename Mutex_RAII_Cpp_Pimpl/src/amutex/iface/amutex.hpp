@@ -24,9 +24,7 @@
 
 #include <mutex>
 #include "amutex_pimpl.hpp"
-
-
-
+#include "amutex_base.hpp"
 
 class AMutex : private AMutexBase
 {

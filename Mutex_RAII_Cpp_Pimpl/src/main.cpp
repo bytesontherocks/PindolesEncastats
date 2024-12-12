@@ -26,13 +26,11 @@
 #include <thread>
 #include <chrono>
 
-
 int main ()
 {
     std::cout << "This is a sandbox project to play with ideas" << std::endl;
 
-    AMutexFactory amutexfact{};
-    auto mtx = AMutex(&amutexfact);
+    auto mtx = AMutex(nullptr);
 
     auto t1 = std::thread ([&]() {
         for(;;)

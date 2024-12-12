@@ -3,9 +3,9 @@
 #include <mutex>
 #include <chrono>
 #include <thread>
-#include "../IAMutexFactory.hpp"
+#include "../../iface/IAMutexFactory.hpp"
 #include <memory>
-#include "../IAMutex.hpp"
+#include "../../iface/IAMutex.hpp"
 class PosixAMutexImpl : public IAMutex
 {
 public:
@@ -22,7 +22,7 @@ private:
 class PosixAMutexImplFactory : public IAMutexFactory
 {
 public:
-    virtual std::unique_ptr<IAMutex> create() {
-        return std::make_unique<PosixAMutexImplFactory>();
-    }
+    std::unique_ptr<IAMutex> create() override {
+        return std::make_unique<PosixAMutexImpl>();
+    } 
 };

@@ -2,7 +2,7 @@
 
 #include "cmsis_os2.h"
 
-class CmsisV2AMutexImpl
+class CmsisV2AMutexImpl : public IAMutex
 {
 public:
     CmsisV2AMutexImpl() {
@@ -17,5 +17,13 @@ public:
     void unlock() { osMutexRelease(mutex_id); }
 
 private:
-    osMutexId_t mutex_id;  
+     osMutexId_t mutex_id;  
+};
+
+class CmsisV2AMutexImplFactory : public IAMutexFactory
+{
+public:
+    virtual std::unique_ptr<IAMutex> create() {
+        return std::make_unique<CmsisV2AMutexImpl>();
+    }
 };
