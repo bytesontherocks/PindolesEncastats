@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(TARGET_POSIX ON)
+#set(TARGET_CMSIS_V2)
+
 find_package(Threads REQUIRED)
 add_subdirectory(src/amutex)
 

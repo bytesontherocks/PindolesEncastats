@@ -3,6 +3,7 @@
 #include "IAMutex.hpp"
 #include <memory>
 #include "amutex_pimpl.hpp"
+
 class AMutexBase
 {
 public:
