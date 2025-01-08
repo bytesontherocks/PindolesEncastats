@@ -49,7 +49,7 @@ namespace {
         void operator()(const Message3 msg3) const {
             std::cout << "Processing Message 3!" << std::endl;
         }
-        void operator()(const Message4 msg4) const {
+        void operator()(const Message4 msg4) const { // Compilation error if type is not handled (e.g. adding new type but is forgotten to be handled)
             std::cout << "Processing Message 4!" << std::endl;
         }
     };
@@ -66,8 +66,8 @@ namespace {
             if (const Message2* msg2 = std::get_if<Message2>(&msg))
                 std::cout << "Processing Message 2!" << std::endl;
             if (const Message3* msg3 = std::get_if<Message3>(&msg))
-                std::cout << "Processing Message 3!" << std::endl;
-            if (const Message4* msg4 = std::get_if<Message4>(&msg))
+                 std::cout << "Processing Message 3!" << std::endl;
+            if (const Message4* msg4 = std::get_if<Message4>(&msg)) // No compilation error if type is not handled (e.g. adding new type but is forgotten to be handled)
                 std::cout << "Processing Message 4!" << std::endl;
 
             // Compilation error if the object type is not in the variant
