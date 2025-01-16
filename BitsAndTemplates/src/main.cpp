@@ -27,8 +27,8 @@
 #include <variant>
 #include <cmath>
 #include <limits>
-
-//std::cout << std::format("Specialized template for double types: {:f}", t) << std::endl;
+#include <bitset>
+#include <array>
 
 // 0       63
 // 65472   65535
@@ -70,6 +70,11 @@ void decodeDecimalToBinary2(const std::uint32_t d)
     std::cout << std::endl;
 }
 
+void decodeDecimalToBinary3(const std::uint32_t d)
+{
+    std::cout << "Binary value: b" << std::bitset<32>(d).to_string() << std::endl;
+}
+
 template <class... Args>
 constexpr std::size_t reversed_binary_value(Args... args)
 {
@@ -108,6 +113,8 @@ int main ()
     
     decodeDecimalToBinary(v);
     decodeDecimalToBinary2(v);// Whys is not warning about the narrowing type conversion from uint64_t to uint32_t?
+    decodeDecimalToBinary3(v);
+
     // check we catch the exception
     // try
     // {        
