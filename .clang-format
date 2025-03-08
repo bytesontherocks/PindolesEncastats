@@ -1,0 +1,30 @@
+# .clang-format
+
+---
+BasedOnStyle: LLVM  # Options: LLVM, Google, Chromium, Mozilla, WebKit
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 100
+BreakBeforeBraces: Attach  # Options: Attach, Linux, Mozilla, Stroustrup, Allman
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: true
+AlwaysBreakTemplateDeclarations: true
+BinPackParameters: false
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignOperands: true
+AlignTrailingComments: true
+ReflowComments: true
+SortIncludes: true
+PointerAlignment: Left  # Options: Left, Right, Middle
+SpacesBeforeTrailingComments: 2
+Cpp11BracedListStyle: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+NamespaceIndentation: All
+SpaceBeforeParens: ControlStatements
+IncludeBlocks: Preserve
+DerivePointerAlignment: false
+IndentPPDirectives: AfterHash
+BreakConstructorInitializers: BeforeColon

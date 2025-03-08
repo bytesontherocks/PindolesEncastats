@@ -1,3 +1,1 @@
-Playing with templates
-
-- specialization
+Playing with Constructors

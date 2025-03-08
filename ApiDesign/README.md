@@ -12,7 +12,7 @@ Motto: make your API hard to use wrong
 - use [[nodiscard]] to force caller to use the returned value
 - never return a raw pointer
 - use 'noexcept' to help indicate the type of error handling
-- provide consisten, impossible to ignore, in-band error handling. In-band meaning the error is provided as part of the response of the API call, not as a parallel mechanim (errno)
+- provide consistent, impossible to ignore, in-band error handling. In-band meaning the error is provided as part of the response of the API call, not as a parallel mechanism (errno)
     examples of good practices: exceptions, std::expected (from C++23 but can be implemented as std::variant<T,Error> or in other ways)
 - use stronger types and avoid default conversions
 - delete problematic overloads / prevent conversions 

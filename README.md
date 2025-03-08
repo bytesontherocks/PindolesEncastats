@@ -1,5 +1,19 @@
 # Pindoles-Encastats
-Presentacions informals de temes de sistemes encastats i desenvolupament de software
+Presentacions informals de temes de sistemes encastats, exercicis que faig i coses que trobo utils en el meu trajecte en el desenvolupament de software
 
-1) Mutex_RAII_Cpp: Us de propietats de C++ que milloren la qualitat del codi.
+
+## clang format 
+Instal·la:
+
+```bash
+sudo apt update
+sudo apt install clang-format
+```
+
+vscode .settings:
+
+```json
+"editor.formatOnSave": true,
+"editor.defaultFormatter": "xaver.clang-format", // Ensures clang-format is used
+```
 
