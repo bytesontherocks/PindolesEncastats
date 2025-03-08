@@ -17,3 +17,8 @@ vscode .settings:
 "editor.defaultFormatter": "xaver.clang-format", // Ensures clang-format is used
 ```
 
+appplying clang format to a given directory
+
+```
+find . -name "*.cpp" -o -name "*.h" | xargs clang-format -i
+```
