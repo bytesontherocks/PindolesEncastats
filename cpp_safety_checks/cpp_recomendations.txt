@@ -1,0 +1,71 @@
+
+C++ Code Guidelines for Modern and Embedded Projects
+====================================================
+
+1. Adopt a Consistent Style Guide
+---------------------------------
+Choose one and stick with it:
+- Google C++ Style Guide — very detailed and widely used.
+- C++ Core Guidelines by Herb Sutter & Bjarne Stroustrup — modern best practices, C++11 and beyond.
+- MISRA C++ — strict, often used in safety-critical embedded systems.
+
+2. Modern C++ Practices (C++11/14/17/20)
+----------------------------------------
+- Use 'auto' for type inference where it improves readability.
+- Use 'constexpr' and 'const' where appropriate.
+- Use 'enum class' instead of plain enums.
+- Use smart pointers (std::unique_ptr, std::shared_ptr) instead of raw new/delete.
+- Apply RAII for resource management.
+- Avoid macros when constexpr, inline, or templates can be used.
+
+3. Safety & Clarity Over Cleverness
+-----------------------------------
+- Avoid clever hacks, especially in embedded systems.
+- Prefer explicit code over compact or ambiguous constructs.
+- Don’t sacrifice readability for performance unless proven necessary.
+
+4. Error Handling
+-----------------
+- Prefer error codes or status objects (e.g., std::optional, std::expected in C++23).
+- Use exceptions only if your runtime allows and it's justified.
+- Ensure RAII and smart pointers for exception safety.
+
+5. Naming Conventions
+---------------------
+- Use CamelCase or snake_case consistently.
+- Choose descriptive names; avoid unnecessary abbreviations.
+
+6. Limit Global State
+---------------------
+- Use namespaces instead of global variables.
+- Minimize use of static variables in functions unless necessary.
+
+7. Header Files
+---------------
+- Use '#pragma once' or include guards.
+- Avoid unnecessary includes; prefer forward declarations.
+- Do not use 'using namespace' in headers.
+
+8. Memory & Performance Considerations
+--------------------------------------
+- Avoid dynamic memory in real-time systems.
+- Use std::array, std::vector cautiously in embedded environments.
+- Understand the cost of virtual functions and RTTI.
+
+9. Code Reviews and Static Analysis
+-----------------------------------
+- Enforce peer reviews for all code.
+- Use linters (clang-tidy, cpplint) and formatters (clang-format).
+- Integrate CI checks for style, compilation, and static analysis.
+
+10. Documentation and Comments
+------------------------------
+- Comment why the code exists, not what it does.
+- Document assumptions, hardware constraints, and timing considerations.
+
+11. Testing
+-----------
+- Use unit tests (GoogleTest, Catch2) where possible.
+- For embedded systems, use hardware-in-the-loop test frameworks.
+- Test protocol handlers, sensor logic, and data conversions.
+
