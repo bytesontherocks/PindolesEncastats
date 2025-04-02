@@ -96,12 +96,6 @@ namespace {
 
             return std::move(old_head);
         }
-        std::shared_ptr<Node<T>> pop_back() {
-            // empty list
-            if (isEmpty()) {
-                return nullptr;
-            }
-        }
 
         bool isEmpty() const { return !m_head; };
 
