@@ -71,17 +71,48 @@ namespace {
             }
         };
 
-        bool isEmpty() const { return !m_head; };
+        std::shared_ptr<Node<T>> pop_front() {
+            // empty list
+            if (isEmpty()) {
+                return nullptr;
+            }
 
-        void printElements() {
-            auto next{m_head};
-            while (nullptr != next) {
-                std::cout << "node with val: " << next->val << std::endl;
-                next = next->next;
-            };
+            auto& next = m_head->next;
+
+            // head is the last node
+            if (nullptr == next) {
+                m_tail.reset();
+
+                std::cout << "head ref counts: " << m_head.use_count() << std::endl;
+                std::cout << "tail ref counts: " << m_tail.use_count() << std::endl;
+                return std::move(m_head);
+            }
+
+            auto old_head = m_head;
+            m_head        = next;
 
             std::cout << "head ref counts: " << m_head.use_count() << std::endl;
             std::cout << "tail ref counts: " << m_tail.use_count() << std::endl;
+
+            return std::move(old_head);
+        }
+        std::shared_ptr<Node<T>> pop_back() {
+            // empty list
+            if (isEmpty()) {
+                return nullptr;
+            }
+        }
+
+        bool isEmpty() const { return !m_head; };
+
+        void printElements() {
+            {
+                auto next{m_head};
+                while (nullptr != next) {
+                    std::cout << "node with val: " << next->val << std::endl;
+                    next = next->next;
+                };
+            }
         }
 
         T find(){};
@@ -102,12 +133,24 @@ int main() {
 
     LinkedList<std::uint32_t> ll{};
 
-    for (int i : std::views::iota(0, 5)) {
+    for (int i : std::views::iota(0, 3)) {
         ll.push_back(std::move(createNodeSharedPointer<std::uint32_t>(42 + i)));
-        // ll.push_front(std::move(createNodeSharedPointer<std::uint32_t>(12 + i)));
+        ll.push_front(std::move(createNodeSharedPointer<std::uint32_t>(12 + i)));
     }
 
     ll.printElements();
+
+    for (int i : std::views::iota(0, 7)) {
+        {
+            auto popped_el{ll.pop_front()};
+            if (popped_el) {
+                std::cout << "poping els from front: " << popped_el->val << std::endl;
+            } else {
+                std::cout << "Empty list" << std::endl;
+            }
+        }
+        ll.printElements();
+    }
 
     // constexpr std::size_t    TOTAL_NUM_THREADS = 1;  // with 10000 it just slows down massively
     // std::vector<std::thread> t_handles;
