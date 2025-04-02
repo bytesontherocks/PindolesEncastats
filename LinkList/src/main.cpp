@@ -45,20 +45,31 @@ namespace {
             if (!m_head) {
                 std::cout << "list has been initialised - head has been set" << std::endl;
                 m_head = std::move(node_to_push);
+                m_tail = m_head;
                 return;
             }
 
-            auto current_node{m_head};
+            {
+                // using tail
+                auto& node_next{m_tail->next};
+                node_next = std::move(node_to_push);
+                m_tail    = node_next;
+            }
 
-            while (true) {
-                if (nullptr == current_node->next) {
-                    auto& node_next{current_node.get()->next};
-                    node_next = std::move(node_to_push);
-                    std::cout << "node added at the tail" << std::endl;
-                    break;
-                }
-                current_node = current_node->next;
-            };
+            // {
+            //     // not using tail
+            //     auto current_node{m_head};
+
+            //     while (true) {
+            //         if (nullptr == current_node->next) {
+            //             auto& node_next{current_node.get()->next};
+            //             node_next = std::move(node_to_push);
+            //             std::cout << "node added at the tail" << std::endl;
+            //             break;
+            //         }
+            //         current_node = current_node->next;
+            //     };
+            // }
         };
 
         bool isEmpty() const { return !m_head; };
@@ -79,6 +90,7 @@ namespace {
 
       private:
         std::shared_ptr<Node<T>> m_head{nullptr};
+        std::shared_ptr<Node<T>> m_tail{nullptr};
     };
 
     template <typename T>
