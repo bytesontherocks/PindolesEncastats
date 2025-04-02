@@ -41,7 +41,7 @@ namespace {
     template <typename T>
     class LinkedList {
       public:
-        void push(std::shared_ptr<Node<T>> node_to_push) {
+        void push_back(std::shared_ptr<Node<T>> node_to_push) {
             if (!m_head) {
                 std::cout << "list has been initialised - head has been set" << std::endl;
                 m_head = std::move(node_to_push);
@@ -55,35 +55,33 @@ namespace {
                 node_next = std::move(node_to_push);
                 m_tail    = node_next;
             }
+        };
 
-            // {
-            //     // not using tail
-            //     auto current_node{m_head};
+        void push_front(std::shared_ptr<Node<T>> node_to_push) {
+            if (!m_head) {
+                std::cout << "list has been initialised - head has been set" << std::endl;
+                m_head = std::move(node_to_push);
+                m_tail = m_head;
+                return;
+            }
 
-            //     while (true) {
-            //         if (nullptr == current_node->next) {
-            //             auto& node_next{current_node.get()->next};
-            //             node_next = std::move(node_to_push);
-            //             std::cout << "node added at the tail" << std::endl;
-            //             break;
-            //         }
-            //         current_node = current_node->next;
-            //     };
-            // }
+            {
+                node_to_push->next = m_head;
+                m_head             = std::move(node_to_push);
+            }
         };
 
         bool isEmpty() const { return !m_head; };
 
         void printElements() {
-            if (isEmpty()) {
-                std::cout << "No elements in the list" << std::endl;
-                return;
-            }
             auto next{m_head};
-            do {
+            while (nullptr != next) {
                 std::cout << "node with val: " << next->val << std::endl;
                 next = next->next;
-            } while (nullptr != next);
+            };
+
+            std::cout << "head ref counts: " << m_head.use_count() << std::endl;
+            std::cout << "tail ref counts: " << m_tail.use_count() << std::endl;
         }
 
         T find(){};
@@ -105,7 +103,8 @@ int main() {
     LinkedList<std::uint32_t> ll{};
 
     for (int i : std::views::iota(0, 5)) {
-        ll.push(std::move(createNodeSharedPointer<std::uint32_t>(42 + i)));
+        ll.push_back(std::move(createNodeSharedPointer<std::uint32_t>(42 + i)));
+        // ll.push_front(std::move(createNodeSharedPointer<std::uint32_t>(12 + i)));
     }
 
     ll.printElements();
