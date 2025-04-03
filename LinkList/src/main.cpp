@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "slinklist.hpp"
 #include <chrono>
 #include <cinttypes>
 #include <iostream>
@@ -31,92 +32,15 @@
 namespace {
 
     template <typename T>
-    class Node {
-      public:
-        explicit Node(const T& val) : val(std::move(val)) {}
-        std::shared_ptr<Node<T>> next{nullptr};
-        T                        val;
-    };
-
-    template <typename T>
-    class LinkedList {
-      public:
-        void push_back(std::shared_ptr<Node<T>> node_to_push) {
-            if (!m_head) {
-                std::cout << "list has been initialised - head has been set" << std::endl;
-                m_head = std::move(node_to_push);
-                m_tail = m_head;
-                return;
-            }
-
-            // using tail
-            auto& node_next{m_tail->next};
-            node_next = std::move(node_to_push);
-            m_tail    = node_next;
-        };
-
-        void push_front(std::shared_ptr<Node<T>> node_to_push) {
-            if (!m_head) {
-                std::cout << "list has been initialised - head has been set" << std::endl;
-                m_head = std::move(node_to_push);
-                m_tail = m_head;
-
-                return;
-            }
-
-            node_to_push->next = m_head;
-            m_head             = std::move(node_to_push);
-        };
-
-        std::shared_ptr<Node<T>> pop_front() {
-            if (isEmpty()) {
-                return nullptr;
-            }
-
-            auto& next = m_head->next;
-
-            // head is the last node
-            if (nullptr == next) {
-                m_tail.reset();
-                return std::move(m_head);
-            }
-
-            auto old_head = m_head;
-            m_head        = std::move(next);
-
-            return std::move(old_head);
-        }
-
-        bool isEmpty() const { return !m_head; };
-
-        void printElements() {
-            {
-                auto next{m_head};
-                while (nullptr != next) {
-                    std::cout << "node with val: " << next->val << std::endl;
-                    next = next->next;
-                };
-            }
-
-            std::cout << "head ref counts: " << m_head.use_count() << std::endl;
-            std::cout << "tail ref counts: " << m_tail.use_count() << std::endl;
-        }
-
-      private:
-        std::shared_ptr<Node<T>> m_head{nullptr};
-        std::shared_ptr<Node<T>> m_tail{nullptr};
-    };
-
-    template <typename T>
     auto createNodeSharedPointer(const T val) {
-        return std::make_shared<Node<T>>(val);
+        return std::make_shared<ll::Node<T>>(val);
     }
 }  // namespace
 
 int main() {
     std::cout << "This is a about link lists" << std::endl;
 
-    LinkedList<std::uint32_t> ll{};
+    ll::LinkedList<std::uint32_t> ll{};
 
     for (int i : std::views::iota(0, 3)) {
         ll.push_back(std::move(createNodeSharedPointer<std::uint32_t>(42 + i)));
@@ -127,9 +51,9 @@ int main() {
 
     for (int i : std::views::iota(0, 7)) {
         {
-            auto popped_el{ll.pop_front()};
-            if (popped_el) {
-                std::cout << "poping els from front: " << popped_el->val << std::endl;
+            auto popped_node{ll.pop_front()};
+            if (popped_node) {
+                std::cout << "poping nodes from front: " << popped_node->val << std::endl;
             } else {
                 std::cout << "Empty list" << std::endl;
             }
