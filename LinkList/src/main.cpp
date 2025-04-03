@@ -49,12 +49,10 @@ namespace {
                 return;
             }
 
-            {
-                // using tail
-                auto& node_next{m_tail->next};
-                node_next = std::move(node_to_push);
-                m_tail    = node_next;
-            }
+            // using tail
+            auto& node_next{m_tail->next};
+            node_next = std::move(node_to_push);
+            m_tail    = node_next;
         };
 
         void push_front(std::shared_ptr<Node<T>> node_to_push) {
@@ -62,17 +60,15 @@ namespace {
                 std::cout << "list has been initialised - head has been set" << std::endl;
                 m_head = std::move(node_to_push);
                 m_tail = m_head;
+
                 return;
             }
 
-            {
-                node_to_push->next = m_head;
-                m_head             = std::move(node_to_push);
-            }
+            node_to_push->next = m_head;
+            m_head             = std::move(node_to_push);
         };
 
         std::shared_ptr<Node<T>> pop_front() {
-            // empty list
             if (isEmpty()) {
                 return nullptr;
             }
@@ -82,17 +78,11 @@ namespace {
             // head is the last node
             if (nullptr == next) {
                 m_tail.reset();
-
-                std::cout << "head ref counts: " << m_head.use_count() << std::endl;
-                std::cout << "tail ref counts: " << m_tail.use_count() << std::endl;
                 return std::move(m_head);
             }
 
             auto old_head = m_head;
-            m_head        = next;
-
-            std::cout << "head ref counts: " << m_head.use_count() << std::endl;
-            std::cout << "tail ref counts: " << m_tail.use_count() << std::endl;
+            m_head        = std::move(next);
 
             return std::move(old_head);
         }
@@ -107,9 +97,10 @@ namespace {
                     next = next->next;
                 };
             }
-        }
 
-        T find(){};
+            std::cout << "head ref counts: " << m_head.use_count() << std::endl;
+            std::cout << "tail ref counts: " << m_tail.use_count() << std::endl;
+        }
 
       private:
         std::shared_ptr<Node<T>> m_head{nullptr};
@@ -143,6 +134,7 @@ int main() {
                 std::cout << "Empty list" << std::endl;
             }
         }
+
         ll.printElements();
     }
 
