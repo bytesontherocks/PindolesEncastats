@@ -3,7 +3,7 @@
 #include <string>
 
 #include <grpcpp/grpcpp.h>
-#include "gen/algorithm.grpc.pb.h"
+#include "../gen/algorithm.grpc.pb.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
