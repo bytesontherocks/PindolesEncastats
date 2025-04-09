@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package algorithm;
+
+service Algo {
+  rpc Calculate (CalcRequest) returns (CalcResult);
+}
+
+message CalcRequest {
+  int32 a = 1;
+  int32 b = 2;
+}
+
+message CalcResult {
+  int32 result = 1;
+}
