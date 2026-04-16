@@ -15,4 +15,4 @@ add_subdirectory(src/amutex)
 
 add_executable(${ProjectName})
 target_sources(${ProjectName}  PUBLIC  src/main.cpp)
-target_link_libraries( ${ProjectName} ${CMAKE_THREAD_LIBS_INIT} amutex)
+target_link_libraries( ${ProjectName} Threads::Threads amutex)

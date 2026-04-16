@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include "ThreadSafeQueue.hpp"
+#include <atomic>
 #include <chrono>
 #include <cinttypes>
 #include <iostream>
@@ -45,13 +46,13 @@ int main() {
 
     constexpr std::size_t    TOTAL_NUM_THREADS = 1;  // with 10000 it just slows down massively
     std::vector<std::thread> t_handles;
-    bool                     run = true;
+    std::atomic<bool>        run{true};
 
     for (std::size_t thread_id = 0; thread_id < TOTAL_NUM_THREADS; ++thread_id) {
         const auto fn = [&](const std::size_t thread_id) {
             uint32_t payload = 100 * thread_id;
             for (;;) {
-                if (run) {
+                if (run.load(std::memory_order_relaxed)) {
                     Message msg{(uint8_t)thread_id, (uint8_t)(thread_id + 33), payload++};
                     ts_q.addItem(std::move(msg));
                     std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -93,7 +94,7 @@ int main() {
                 std::chrono::high_resolution_clock::now() - start);
 
             if (time_elapsed.count() >= 10) {
-                run = false;
+                run.store(false, std::memory_order_relaxed);
                 break;
             }
 

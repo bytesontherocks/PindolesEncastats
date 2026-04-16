@@ -74,6 +74,10 @@ public:
     explicit MutexGuard(Mutex& mutex) : mMutex{mutex} {
         mMutex.lock();
     }
+    MutexGuard(const MutexGuard&) = delete;
+    auto operator=(const MutexGuard&) -> MutexGuard& = delete;
+    MutexGuard(MutexGuard&&) = delete;
+    auto operator=(MutexGuard&&) -> MutexGuard& = delete;
     ~MutexGuard() {
         mMutex.unlock();
     }

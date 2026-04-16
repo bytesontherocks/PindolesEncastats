@@ -70,18 +70,16 @@ namespace ll {
                 return nullptr;
             }
 
-            auto& next = m_head->next;
-
             // head is the last node
-            if (nullptr == next) {
+            if (nullptr == m_head->next) {
                 m_tail.reset();
                 return std::move(m_head);
             }
 
+            // detach current head and set new head
             auto old_head = m_head;
-            m_head        = std::move(next);
-
-            return std::move(old_head);
+            m_head        = std::move(old_head->next);  // old_head->next will be left as nullptr
+            return old_head;
         }
 
         bool isEmpty() const { return !m_head; };

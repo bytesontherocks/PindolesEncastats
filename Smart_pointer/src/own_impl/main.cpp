@@ -33,79 +33,59 @@
 // to be deleted if there are still instances using it.
 //
 
-// TODO
-// add copy ctr and assignment operator
-// add move ctr and assignment operator
-
 namespace {
 
     template <typename T>
     class SmartPointer {
       public:
+        SmartPointer() {
+            std::cout << "Creating resources for SmartPointer" << std::endl;
+            m_ptr      = new T{};
+            m_refCount = new size_t{1};
+        }
         ~SmartPointer() {
             if (m_ptr != nullptr && m_refCount != nullptr) {
                 --(*m_refCount);
                 if (*m_refCount == 0) {
                     delete m_ptr;
                     delete m_refCount;
-                    std::cout << "Deleting resources for SmartPointer" << std::endl;
                 }
             }
         };
 
-        explicit SmartPointer() {
-            std::cout << "Creating resources for SmartPointer" << std::endl;
-            m_ptr       = new T{};
-            m_refCount  = new size_t{1};
-            *m_refCount = 1;
-        }
-
-        SmartPointer(const SmartPointer<T>& rhs) {
-            std::cout << "Copy constructor" << std::endl;
-            if (rhs.m_ptr != this->m_ptr) {
-                // check that the pointer to copy into does not have any other reference
-                this->~SmartPointer();
-                this->m_ptr      = rhs.m_ptr;
-                this->m_refCount = rhs.m_refCount;
-                *(this->m_refCount)++;
+        SmartPointer(const SmartPointer<T>& rhs) : m_ptr(nullptr), m_refCount(nullptr) {
+            if (rhs.m_ptr != nullptr) {
+                m_ptr      = rhs.m_ptr;
+                m_refCount = rhs.m_refCount;
+                ++(*m_refCount);
             }
         }
 
-        SmartPointer(SmartPointer<T>&& rhs) {
-            std::cout << "Move constructor" << std::endl;
-            if (rhs.m_ptr != this->m_ptr) {
-                // check that the pointer to copy into does not have any other reference
-                this->~SmartPointer();
-                this->m_ptr      = rhs.m_ptr;
-                this->m_refCount = rhs.m_refCount;
-
-                rhs.m_ptr      = nullptr;
-                rhs.m_refCount = nullptr;
-            }
+        SmartPointer(SmartPointer<T>&& rhs) : m_ptr(nullptr), m_refCount(nullptr) {
+            m_ptr          = rhs.m_ptr;
+            m_refCount     = rhs.m_refCount;
+            rhs.m_ptr      = nullptr;
+            rhs.m_refCount = nullptr;
         }
 
         T& operator*() const { return *m_ptr; }
 
-        SmartPointer<T> operator=(const SmartPointer<T>& rhs) {
-            std::cout << "Copy assignment operator" << std::endl;
-            if (rhs.m_ptr != this->m_ptr) {
-                // check that the pointer to copy into does not have any other reference
-                this->~SmartPointer();
-                this->m_ptr      = rhs.m_ptr;
-                this->m_refCount = rhs.m_refCount;
-                *(this->m_refCount)++;
+        SmartPointer<T>& operator=(const SmartPointer<T>& rhs) {
+            if (rhs.m_ptr != m_ptr) {
+                release();
+                m_ptr      = rhs.m_ptr;
+                m_refCount = rhs.m_refCount;
+                if (m_refCount)
+                    ++(*m_refCount);
             }
             return *this;
         }
 
-        SmartPointer<T> operator=(SmartPointer<T>&& rhs) {
-            std::cout << "Move assignment operator" << std::endl;
-            if (rhs.m_ptr != this->m_ptr) {
-                // check that the pointer to copy into does not have any other reference
-                this->~SmartPointer();
-                this->m_ptr      = rhs.m_ptr;
-                this->m_refCount = rhs.m_refCount;
-
+        SmartPointer<T>& operator=(SmartPointer<T>&& rhs) {
+            if (rhs.m_ptr != m_ptr) {
+                release();
+                m_ptr          = rhs.m_ptr;
+                m_refCount     = rhs.m_refCount;
                 rhs.m_ptr      = nullptr;
                 rhs.m_refCount = nullptr;
             }
@@ -113,9 +93,23 @@ namespace {
         }
 
       private:
-        T*      m_ptr      = nullptr;
-        size_t* m_refCount = nullptr;
+        void release() {
+            if (m_ptr != nullptr && m_refCount != nullptr) {
+                if (--(*m_refCount) == 0) {
+                    delete m_ptr;
+                    delete m_refCount;
+                }
+                m_ptr      = nullptr;
+                m_refCount = nullptr;
+
+                std::cout << "SmartPointer resources deleted" << std::endl;
+            }
+        }
+
+        T*      m_ptr{nullptr};
+        size_t* m_refCount{nullptr};
     };
+
 }  // namespace
 
 int main() {

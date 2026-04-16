@@ -10,4 +10,4 @@ find_package(Threads REQUIRED)
 
 add_executable(Sandbox)
 target_sources(Sandbox  PUBLIC  src/main.cpp src/Mutex.hpp)
-target_link_libraries( Sandbox ${CMAKE_THREAD_LIBS_INIT} )
+target_link_libraries( Sandbox Threads::Threads )
